@@ -10,7 +10,6 @@
   --bright: #ffcc00;
   --pink: #ff6b9d;
   --bg: #f0fff4;
-  --card: #ffffff;
 }
 * { box-sizing: border-box; }
 body {
@@ -22,70 +21,73 @@ body {
 header {
   background: linear-gradient(135deg, #2e7d32, #66bb6a);
   color: white;
-  padding: 1.5rem 1rem;
+  padding: 1.8rem 1rem;
   text-align: center;
-  border-bottom: 6px solid #ffcc00;
+  border-bottom: 8px solid #ffcc00;
+  position: relative;
+  overflow: hidden;
 }
-header h1 { margin: 0; font-size: 2rem; text-shadow: 2px 2px 0 #1b5e20; }
-header .tag { background: #ff6b9d; display: inline-block; padding: 0.3rem 1rem; border-radius: 20px; margin-top: 0.5rem; font-weight: bold; }
+header h1 { margin: 0; font-size: 2.2rem; text-shadow: 2px 2px 0 #1b5e20; }
+header .tag { background: #ff6b9d; display: inline-block; padding: 0.4rem 1.2rem; border-radius: 30px; margin-top: 0.6rem; font-weight: bold; font-size: 1.1rem; }
 .filters {
   padding: 1rem;
   background: white;
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   position: sticky;
   top: 0;
   z-index: 20;
 }
 .filters input, .filters select {
-  padding: 0.7rem 1rem;
-  border: 2px solid #66bb6a;
-  border-radius: 25px;
+  padding: 0.8rem 1rem;
+  border: 3px solid #66bb6a;
+  border-radius: 30px;
   font-size: 1rem;
-  flex: 1 1 150px;
+  flex: 1 1 160px;
   outline: none;
+  background: #f9fff9;
 }
-.filters input:focus, .filters select:focus { border-color: #ffcc00; }
+.filters input:focus, .filters select:focus { border-color: #ffcc00; box-shadow: 0 0 0 3px rgba(255,204,0,0.3); }
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.2rem;
-  padding: 1.2rem;
+  gap: 1.4rem;
+  padding: 1.4rem;
 }
 .card {
   background: white;
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
   transition: transform 0.2s, box-shadow 0.2s;
-  border: 3px solid transparent;
+  border: 4px solid transparent;
 }
-.card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); border-color: #ffcc00; }
+.card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.18); border-color: #ffcc00; }
 .card img {
   width: 100%;
-  height: 200px;
+  height: 210px;
   object-fit: cover;
 }
-.card-body { padding: 1rem 1.2rem 1.4rem; }
-.card h3 { margin: 0 0 0.3rem; font-size: 1.25rem; color: #2e7d32; }
+.card-body { padding: 1.1rem 1.3rem 1.5rem; }
+.card h3 { margin: 0 0 0.3rem; font-size: 1.3rem; color: #2e7d32; }
 .badge {
   display: inline-block;
   background: #ffcc00;
   color: #1a3c34;
-  padding: 0.25rem 0.8rem;
-  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
+  border-radius: 25px;
   font-weight: bold;
-  font-size: 0.8rem;
-  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
 }
 .badge.very { background: #ff6b9d; color: white; }
 .badge.exciting { background: #42a5f5; color: white; }
-.county { color: #666; font-size: 0.9rem; margin-bottom: 0.3rem; }
-.renovated { font-size: 0.85rem; color: #388e3c; font-weight: 600; margin-bottom: 0.5rem; }
-.desc { font-size: 0.95rem; line-height: 1.5; }
-.note { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #555; background: white; margin: 1rem; border-radius: 15px; }
+.county { color: #666; font-size: 0.95rem; margin-bottom: 0.3rem; }
+.renovated { font-size: 0.9rem; color: #388e3c; font-weight: 700; margin-bottom: 0.6rem; }
+.desc { font-size: 1rem; line-height: 1.5; }
+.note { text-align: center; padding: 1.5rem; font-size: 0.9rem; color: #555; background: white; margin: 1rem; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap" rel="stylesheet">
 </head>
@@ -109,90 +111,27 @@ header .tag { background: #ff6b9d; display: inline-block; padding: 0.3rem 1rem; 
 </div>
 
 <div class="grid" id="grid"></div>
-<p class="note">Curated list of the most fun playgrounds across Ireland. Photos are of real Irish playgrounds where possible. Ratings based on size, features, and parent reviews. Ireland has ~1,000 public playgrounds!</p>
+<p class="note">Curated selection of the most fun playgrounds across Ireland. Photos are real where available. Ratings based on size, features, inclusivity and parent reviews. Ireland has around 1,000 public playgrounds!</p>
 
 <script>
 const playgrounds = [
-  {
-    name: "Fitzgerald Park Playground",
-    county: "Cork",
-    excitement: 5,
-    renovated: "2015 (€600k castle & ship redesign)",
-    desc: "Spectacular castle + pirate ship themed playground. Super inclusive with wheelchair roundabout, climbing wall, multiple slides. One of Ireland’s absolute best!",
-    img: "https://thefamilyedit.ie/wp-content/uploads/2018/11/Fitzgerald-Park-Playground.jpg"
-  },
-  {
-    name: "Ardgillan Demesne Playground",
-    county: "Dublin",
-    excitement: 5,
-    renovated: "2006 + recent inclusive swing",
-    desc: "Huge castle-and-sea themed playground with 30+ pieces, zip line, climbing nets and amazing sea views. Often called the best in Dublin.",
-    img: "https://www.thesun.ie/wp-content/uploads/sites/3/2025/03/newspress-collage-lhvmto5t5-1742911961963.jpg"
-  },
-  {
-    name: "Marlay Park Playgrounds",
-    county: "Dublin",
-    excitement: 5,
-    renovated: "Regular upgrades",
-    desc: "Massive modern playgrounds with toddler, adventure, teen and sensory sections. Climbing, sandpits, slides – pure joy for south Dublin families.",
-    img: "https://thefamilyedit.ie/wp-content/uploads/2019/02/Marlay-Park-Playground.jpg"
-  },
-  {
-    name: "Phoenix Park Visitor Centre Playground",
-    county: "Dublin",
-    excitement: 4,
-    renovated: "2008 universal access",
-    desc: "Bright, well-kept universal-access playground. Soft surfaces, good for mixed ages. Even Beyoncé’s daughter played here!",
-    img: "https://thefamilyedit.ie/wp-content/uploads/2019/02/Phoenix-Park-Playground.jpg"
-  },
-  {
-    name: "Ballincollig Regional Park",
-    county: "Cork",
-    excitement: 5,
-    renovated: "Major recent upgrade",
-    desc: "Big fort, ropes, double slides and loads of space. Perfect for a full day with walks and picnics.",
-    img: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=800&q=80"
-  },
-  {
-    name: "Rinville Park Playground",
-    county: "Galway",
-    excitement: 4,
-    renovated: "Well maintained",
-    desc: "Lovely playground in the old walled garden near a castle. Swings, slides, climbing forts – coffee van often nearby.",
-    img: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80"
-  },
-  {
-    name: "Doughiska Playground",
-    county: "Galway",
-    excitement: 4,
-    renovated: "Modern inclusive",
-    desc: "Favourite in Galway City. Sand diggers, enclosed toddler area, plus skate park nearby.",
-    img: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&q=80"
-  },
-  {
-    name: "Clonakilty Playground",
-    county: "Cork",
-    excitement: 4,
-    renovated: "Recently refurbished",
-    desc: "Freshly refurbished, interactive for all ages, enclosed with parent seating inside. Wheelchair swing included.",
-    img: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80"
-  },
-  {
-    name: "Little Island Playground",
-    county: "Cork",
-    excitement: 4,
-    renovated: "Recently refurbished",
-    desc: "Zip line, climbing frame, spinner and swings. Great for mixed ages + loop walk.",
-    img: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80"
-  },
-  {
-    name: "Herbert Park Playground",
-    county: "Dublin",
-    excitement: 4,
-    renovated: "Regular maintenance",
-    desc: "Colourful long-time favourite in Ballsbridge. Can get busy but always fun.",
-    img: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800&q=80"
-  }
+  { name: "Fitzgerald Park Playground", county: "Cork", excitement: 5, renovated: "2015 (€600k castle & ship)", desc: "Spectacular castle + pirate ship themed playground. Super inclusive with wheelchair roundabout, climbing wall, multiple slides. One of Ireland’s absolute best!", img: "https://thefamilyedit.ie/wp-content/uploads/2018/11/Fitzgerald-Park-Playground.jpg" },
+  { name: "Ardgillan Demesne Playground", county: "Dublin", excitement: 5, renovated: "2006 + recent inclusive swing", desc: "Huge castle-and-sea themed playground with 30+ pieces, zip line, climbing nets and amazing sea views. Often called the best in Dublin.", img: "https://www.thesun.ie/wp-content/uploads/sites/3/2025/03/newspress-collage-lhvmto5t5-1742911961963.jpg" },
+  { name: "Marlay Park Playgrounds", county: "Dublin", excitement: 5, renovated: "Regular upgrades", desc: "Massive modern playgrounds with toddler, adventure, teen and sensory sections. Climbing, sandpits, slides – pure joy for south Dublin families.", img: "https://thefamilyedit.ie/wp-content/uploads/2019/02/Marlay-Park-Playground.jpg" },
+  { name: "Phoenix Park Visitor Centre Playground", county: "Dublin", excitement: 4, renovated: "2008 universal access", desc: "Bright, well-kept universal-access playground. Soft surfaces, good for mixed ages. Even Beyoncé’s daughter played here!", img: "https://thefamilyedit.ie/wp-content/uploads/2019/02/Phoenix-Park-Playground.jpg" },
+  { name: "Ballincollig Regional Park", county: "Cork", excitement: 5, renovated: "Major recent upgrade", desc: "Big fort, ropes, double slides and loads of space. Perfect for a full day with walks and picnics.", img: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=800&q=80" },
+  { name: "Rinville Park Playground", county: "Galway", excitement: 4, renovated: "Well maintained", desc: "Lovely playground in the old walled garden near a castle. Swings, slides, climbing forts – coffee van often nearby.", img: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80" },
+  { name: "Doughiska Playground", county: "Galway", excitement: 4, renovated: "Modern inclusive", desc: "Favourite in Galway City. Sand diggers, enclosed toddler area, plus skate park nearby.", img: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&q=80" },
+  { name: "Clonakilty Playground", county: "Cork", excitement: 4, renovated: "Recently refurbished", desc: "Freshly refurbished, interactive for all ages, enclosed with parent seating inside. Wheelchair swing included.", img: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80" },
+  { name: "Little Island Playground", county: "Cork", excitement: 4, renovated: "Recently refurbished", desc: "Zip line, climbing frame, spinner and swings. Great for mixed ages + loop walk.", img: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80" },
+  { name: "Herbert Park Playground", county: "Dublin", excitement: 4, renovated: "Regular maintenance", desc: "Colourful long-time favourite in Ballsbridge. Can get busy but always fun.", img: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800&q=80" },
+  { name: "St Stephen’s Green Playground", county: "Dublin", excitement: 4, renovated: "Well maintained", desc: "Totally enclosed playground in the famous city-centre park. Parents love the attentive atmosphere.", img: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80" },
+  { name: "Millennium Park Playground", county: "Dublin", excitement: 4, renovated: "Modern", desc: "Highly rated playground in Blanchardstown. Parents call it ‘out of this world’.", img: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80" },
+  { name: "Rossmore Park Playground", county: "Monaghan", excitement: 5, renovated: "2019", desc: "Fantastic wooden structures, zip lines and a giant’s head you can crawl through. Highly recommended after the 2019 redo.", img: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=800&q=80" },
+  { name: "Russborough House Playground", county: "Wicklow", excitement: 4, renovated: "Open year-round", desc: "Adventure-style equipment, wooden walk, spider web climbing frame, sandpit and slides. Beautiful setting.", img: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80" },
+  { name: "Mungret Playground", county: "Limerick", excitement: 5, renovated: "Inclusive upgrades", desc: "Wheelchair accessible swings, roundabouts, bouncy bridge, sensory activities, zip line. Outdoor gym nearby too.", img: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&q=80" },
+  { name: "Knockreer Playground", county: "Kerry", excitement: 4, renovated: "Inclusive design", desc: "Specially designed for inclusivity in Killarney. Wheelchair-friendly roundabout and double-width slide.", img: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80" },
+  { name: "Corkagh Park Playground", county: "Dublin", excitement: 4, renovated: "Natural wooden style", desc: "Natural wooden playground with fairy trail nearby. Great for a full day with walks and rose garden.", img: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800&q=80" }
 ];
 
 const grid = document.getElementById("grid");
@@ -201,8 +140,7 @@ const countyEl = document.getElementById("county");
 const excitementEl = document.getElementById("excitement");
 
 function excitementLabel(n) {
-  const labels = ["", "Boring", "Mild", "Fun", "Exciting", "Very Exciting"];
-  return labels[n] || "";
+  return ["", "Boring", "Mild", "Fun", "Exciting", "Very Exciting"][n] || "";
 }
 function badgeClass(n) {
   if (n === 5) return "very";
