@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ireland Playgrounds – Fun Finder</title>
+<style>
+:root {
+  --green: #1a7a4a;
+  --bright: #ffcc00;
+  --pink: #ff6b9d;
+  --bg: #f0fff4;
+  --card: #ffffff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(180deg, #e8f5e9 0%, #fff8e1 100%);
+  color: #1a3c34;
+}
+header {
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  border-bottom: 6px solid #ffcc00;
+}
+header h1 { margin: 0; font-size: 2rem; text-shadow: 2px 2px 0 #1b5e20; }
+header .tag { background: #ff6b9d; display: inline-block; padding: 0.3rem 1rem; border-radius: 20px; margin-top: 0.5rem; font-weight: bold; }
+.filters {
+  padding: 1rem;
+  background: white;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.filters input, .filters select {
+  padding: 0.7rem 1rem;
+  border: 2px solid #66bb6a;
+  border-radius: 25px;
+  font-size: 1rem;
+  flex: 1 1 150px;
+  outline: none;
+}
+.filters input:focus, .filters select:focus { border-color: #ffcc00; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2rem;
+  padding: 1.2rem;
+}
+.card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 3px solid transparent;
+}
+.card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.15); border-color: #ffcc00; }
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.card-body { padding: 1rem 1.2rem 1.4rem; }
+.card h3 { margin: 0 0 0.3rem; font-size: 1.25rem; color: #2e7d32; }
+.badge {
+  display: inline-block;
+  background: #ffcc00;
+  color: #1a3c34;
+  padding: 0.25rem 0.8rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+.badge.very { background: #ff6b9d; color: white; }
+.badge.exciting { background: #42a5f5; color: white; }
+.county { color: #666; font-size: 0.9rem; margin-bottom: 0.3rem; }
+.renovated { font-size: 0.85rem; color: #388e3c; font-weight: 600; margin-bottom: 0.5rem; }
+.desc { font-size: 0.95rem; line-height: 1.5; }
+.note { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #555; background: white; margin: 1rem; border-radius: 15px; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <h1>Ireland Playgrounds</h1>
+  <div class="tag">Play • Explore • Discover!</div>
+</header>
+
+<div class="filters">
+  <input type="search" id="search" placeholder="Search playgrounds..." />
+  <select id="county"><option value="">All counties</option></select>
+  <select id="excitement">
+    <option value="">All fun levels</option>
+    <option value="5">Very Exciting</option>
+    <option value="4">Exciting</option>
+    <option value="3">Fun</option>
+    <option value="2">Mild</option>
+    <option value="1">Boring</option>
+  </select>
+</div>
+
+<div class="grid" id="grid"></div>
+<p class="note">Curated list of the most fun playgrounds across Ireland. Photos are of real Irish playgrounds where possible. Ratings based on size, features, and parent reviews. Ireland has ~1,000 public playgrounds!</p>
+
+<script>
+const playgrounds = [
+  {
+    name: "Fitzgerald Park Playground",
+    county: "Cork",
+    excitement: 5,
+    renovated: "2015 (€600k castle & ship redesign)",
+    desc: "Spectacular castle + pirate ship themed playground. Super inclusive with wheelchair roundabout, climbing wall, multiple slides. One of Ireland’s absolute best!",
+    img: "https://thefamilyedit.ie/wp-content/uploads/2018/11/Fitzgerald-Park-Playground.jpg"
+  },
+  {
+    name: "Ardgillan Demesne Playground",
+    county: "Dublin",
+    excitement: 5,
+    renovated: "2006 + recent inclusive swing",
+    desc: "Huge castle-and-sea themed playground with 30+ pieces, zip line, climbing nets and amazing sea views. Often called the best in Dublin.",
+    img: "https://www.thesun.ie/wp-content/uploads/sites/3/2025/03/newspress-collage-lhvmto5t5-1742911961963.jpg"
+  },
+  {
+    name: "Marlay Park Playgrounds",
+    county: "Dublin",
+    excitement: 5,
+    renovated: "Regular upgrades",
+    desc: "Massive modern playgrounds with toddler, adventure, teen and sensory sections. Climbing, sandpits, slides – pure joy for south Dublin families.",
+    img: "https://thefamilyedit.ie/wp-content/uploads/2019/02/Marlay-Park-Playground.jpg"
+  },
+  {
+    name: "Phoenix Park Visitor Centre Playground",
+    county: "Dublin",
+    excitement: 4,
+    renovated: "2008 universal access",
+    desc: "Bright, well-kept universal-access playground. Soft surfaces, good for mixed ages. Even Beyoncé’s daughter played here!",
+    img: "https://thefamilyedit.ie/wp-content/uploads/2019/02/Phoenix-Park-Playground.jpg"
+  },
+  {
+    name: "Ballincollig Regional Park",
+    county: "Cork",
+    excitement: 5,
+    renovated: "Major recent upgrade",
+    desc: "Big fort, ropes, double slides and loads of space. Perfect for a full day with walks and picnics.",
+    img: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=800&q=80"
+  },
+  {
+    name: "Rinville Park Playground",
+    county: "Galway",
+    excitement: 4,
+    renovated: "Well maintained",
+    desc: "Lovely playground in the old walled garden near a castle. Swings, slides, climbing forts – coffee van often nearby.",
+    img: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80"
+  },
+  {
+    name: "Doughiska Playground",
+    county: "Galway",
+    excitement: 4,
+    renovated: "Modern inclusive",
+    desc: "Favourite in Galway City. Sand diggers, enclosed toddler area, plus skate park nearby.",
+    img: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?w=800&q=80"
+  },
+  {
+    name: "Clonakilty Playground",
+    county: "Cork",
+    excitement: 4,
+    renovated: "Recently refurbished",
+    desc: "Freshly refurbished, interactive for all ages, enclosed with parent seating inside. Wheelchair swing included.",
+    img: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80"
+  },
+  {
+    name: "Little Island Playground",
+    county: "Cork",
+    excitement: 4,
+    renovated: "Recently refurbished",
+    desc: "Zip line, climbing frame, spinner and swings. Great for mixed ages + loop walk.",
+    img: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80"
+  },
+  {
+    name: "Herbert Park Playground",
+    county: "Dublin",
+    excitement: 4,
+    renovated: "Regular maintenance",
+    desc: "Colourful long-time favourite in Ballsbridge. Can get busy but always fun.",
+    img: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800&q=80"
+  }
+];
+
+const grid = document.getElementById("grid");
+const searchEl = document.getElementById("search");
+const countyEl = document.getElementById("county");
+const excitementEl = document.getElementById("excitement");
+
+function excitementLabel(n) {
+  const labels = ["", "Boring", "Mild", "Fun", "Exciting", "Very Exciting"];
+  return labels[n] || "";
+}
+function badgeClass(n) {
+  if (n === 5) return "very";
+  if (n === 4) return "exciting";
+  return "";
+}
+
+function render() {
+  const q = searchEl.value.toLowerCase();
+  const c = countyEl.value;
+  const e = excitementEl.value ? parseInt(excitementEl.value) : 0;
+
+  const filtered = playgrounds.filter(p => {
+    if (c && p.county !== c) return false;
+    if (e && p.excitement !== e) return false;
+    if (q && !(`${p.name} ${p.county} ${p.desc}`).toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="card">
+      <img src="${p.img}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=800&q=80'">
+      <div class="card-body">
+        <h3>${p.name}</h3>
+        <div class="county">${p.county}</div>
+        <div class="badge ${badgeClass(p.excitement)}">${excitementLabel(p.excitement)}</div>
+        <div class="renovated">Last big update: ${p.renovated}</div>
+        <div class="desc">${p.desc}</div>
+      </div>
+    </div>
+  `).join("") || "<p style='grid-column:1/-1;text-align:center;padding:2rem'>No playgrounds match – try different filters!</p>";
+}
+
+function populateCounties() {
+  const counties = [...new Set(playgrounds.map(p => p.county))].sort();
+  counties.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c;
+    countyEl.appendChild(opt);
+  });
+}
+
+searchEl.addEventListener("input", render);
+countyEl.addEventListener("change", render);
+excitementEl.addEventListener("change", render);
+populateCounties();
+render();
+</script>
+</body>
+</html>
